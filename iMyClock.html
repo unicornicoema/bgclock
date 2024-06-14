@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="bg">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Часовник със стрелки</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #fefad9;
+    }
+
+    #clock {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background-color: #000;
+      border: 10px solid rgb(255, 255, 255);
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .hour {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 2px;
+      height: 110px;
+      background-color: #fe0808;
+      transform: translate(-50%, -100%) rotate(90deg);
+      transform-origin: bottom center;
+      z-index: 3;
+    }
+
+    .minute {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 2px;
+      height: 140px;
+      background-color: #6fd81a;
+      transform: translate(-50%, -100%) rotate(180deg);
+      transform-origin: bottom center;
+      z-index: 2;
+    }
+
+    .second {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 1px;
+      height: 140px;
+      background-color: #cae62c;
+      transform: translate(-50%, -100%) rotate(270deg);
+      transform-origin: bottom center;
+      z-index: 1;
+    }
+
+    .info-container {
+      position: absolute;
+      top: 30%;
+      left: 86%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      width: 100%;
+    }
+
+    .date {
+      position: absolute;
+      top: -10px;
+      width: 100px;
+      padding: 5px;
+      background-color: #2f302d;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      color: #b5aeae;
+      z-index: 5;
+    }
+
+    .day {
+      position: absolute;
+      bottom: -180px;
+      width: 100px;
+      padding: 5px;
+      background-color: #2f302d;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      color: #b5aeae;
+      z-index: 5;
+    }
+
+    .number {
+      position: absolute;
+      font-size: 30px;
+      color: #fff;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .n12 {
+      top: 20px;
+      left: calc(50% - 10px);
+    }
+
+    .n3 {
+      top: calc(50% - 10px);
+      right: 20px;
+    }
+
+    .n6 {
+      bottom: 20px;
+      left: calc(50% - 10px);
+    }
+
+    .n9 {
+      top: calc(50% - 10px);
+      left: 20px;
+    }
+
+    .dot {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      background: #ccc;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      box-shadow: 0 2px 4px -1px black;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="clock">
+    <div class="dot"></div>
+    <div class="hour"></div>
+    <div class="minute"></div>
+    <div class="second"></div>
+    <div class="info-container">
+      <div class="date"></div>
+      <div class="day"></div>
+    </div>
+    <div class="number n12">12</div>
+    <div class="number n3">3</div>
+    <div class="number n6">6</div>
+    <div class="number n9">9</div>
+  </div>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+      const date = now.getDate();
+      const month = now.getMonth() + 1; // Месеците са от 0 до 11
+      const year = now.getFullYear();
+      const days = ["Неделя", "Понеделник", "Вторник", "Сряда", "Четвъртък", "Петък", "Събота"];
+      const day = days[now.getDay()];
+
+      const hourHand = document.querySelector('.hour');
+      const minuteHand = document.querySelector('.minute');
+      const secondHand = document.querySelector('.second');
+      const dateEl = document.querySelector('.date');
+      const dayEl = document.querySelector('.day');
+
+      const hourDeg = (hours % 12) * 30 + (minutes / 60) * 30;
+      const minuteDeg = minutes * 6 + (seconds / 60) * 6;
+      const secondDeg = seconds * 6;
+
+      hourHand.style.transform = `translate(-50%, -100%) rotate(${hourDeg}deg)`;
+      minuteHand.style.transform = `translate(-50%, -100%) rotate(${minuteDeg}deg)`;
+      secondHand.style.transform = `translate(-50%, -100%) rotate(${secondDeg}deg)`;
+
+      dateEl.textContent = `${date}/${month < 10 ? '0' : ''}${month}/${year}`;
+      dayEl.textContent = day;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+</body>
+
+</html>
